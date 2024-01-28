@@ -1,0 +1,7 @@
+python-dotenv
+flask
+django
+Adafruit_DHT
+adafruit-circuitpython-ads1x15
+cv2
+numpy
