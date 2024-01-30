@@ -39,12 +39,12 @@ class Command(BaseCommand):
             latest_location = Location.objects.latest("timestamp")
             bot.reply_to(
                 message, 
-                f"""Latest temperature: {latest_temperature.value}°C
-Latest humidity: {latest_humidity.value}%
+                f"""Latest temperature: {latest_temperature.value:.2f}°C
+Latest humidity: {latest_humidity.value:.2f}%
 Latest audio noise: {'Yes' if latest_audio_noise.value else 'No'}
 Latest light: {'Yes' if latest_light.value else 'No'}
 Latest air pollution: {'Yes' if latest_air_pollution.value else 'No'}
-Latest location: {latest_location.latitude}, {latest_location.longitude}""")
+Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}""")
         
         def plot(Model):
             temperatures = Model.objects.filter(timestamp__gte=timezone.now()-timezone.timedelta(days=7))
@@ -52,6 +52,8 @@ Latest location: {latest_location.latitude}, {latest_location.longitude}""")
                 values = [1 if temperature.value else 0 for temperature in temperatures]
             else:
                 values = [temperature.value for temperature in temperatures]
+                # smoothing kernel
+                values = [sum(values[i-2:i+3])/5 for i in range(2, len(values)-2)]
             timestamps = [temperature.timestamp for temperature in temperatures]
             model = LinearRegression()
             model.fit([[i] for i in range(len(timestamps))], values)

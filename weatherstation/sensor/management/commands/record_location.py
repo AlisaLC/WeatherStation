@@ -21,6 +21,8 @@ class Command(BaseCommand):
                     newmsg=pynmea2.parse(newdata)
                     lat=newmsg.latitude
                     lng=newmsg.longitude
+                    if abs(lat) < 0.1 and abs(lng) < 0.1:
+                        continue
                     Location.objects.create(latitude=lat, longitude=lng)
                     logger.info(f'Location: {lat}, {lng}')
                     time.sleep(settings.GPS_INTERVAL)
