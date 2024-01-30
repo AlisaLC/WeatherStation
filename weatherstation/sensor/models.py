@@ -18,7 +18,7 @@ class Light(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class AirPollution(models.Model):
-    value = models.FloatField()
+    value = models.BooleanField() # True = polluted, False = clean
     timestamp = models.DateTimeField(auto_now_add=True)
 
 class Location(models.Model):

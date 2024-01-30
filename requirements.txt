@@ -1,9 +1,11 @@
 python-dotenv
-flask
+pyTelegramBotAPI
 django
 Adafruit_DHT
 adafruit-circuitpython-ads1x15
 numpy
 requests
 pillow
-channels
+scikit-learn
+streamlit
+plotly
