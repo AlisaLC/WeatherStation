@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-import logging
-
-logging.basicConfig(level=logging.INFO)
 
 load_dotenv()
 
@@ -139,8 +136,8 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_USE_TLS = True
 
 TELEGRAM_BOT_TOKEN = os.environ['TELEGRAM_BOT_TOKEN']
-SOCKS5_IP = os.environ['SOCKS5_IP']
-SOCKS5_PORT = os.environ['SOCKS5_PORT']
+TELEGRAM_API_URL = os.environ['TELEGRAM_API_URL']
+TELEGRAM_FILE_URL = os.environ['TELEGRAM_FILE_URL']
 
 DHT_PIN = 4
 DHT_INTERVAL = 10

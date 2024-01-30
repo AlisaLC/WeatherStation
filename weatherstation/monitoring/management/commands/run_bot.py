@@ -3,6 +3,8 @@ from django.conf import settings
 
 import telebot
 from telebot import apihelper
+apihelper.API_URL = settings.TELEGRAM_API_URL
+apihelper.FILE_URL = settings.TELEGRAM_FILE_URL
 
 import requests
 import plotly.graph_objects as go
@@ -18,10 +20,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
-        apihelper.proxy = {
-            'http': f'socks5://{settings.SOCKS5_IP}:{settings.SOCKS5_PORT}',
-            'https': f'socks5://{settings.SOCKS5_IP}:{settings.SOCKS5_PORT}',
-        }
 
         @bot.message_handler(commands=["start"])
         def start(message):
@@ -41,14 +39,12 @@ class Command(BaseCommand):
             latest_location = Location.objects.latest("timestamp")
             bot.reply_to(
                 message, 
-                f"""
-                Latest temperature: {latest_temperature.value}°C
-                Latest humidity: {latest_humidity.value}%
-                Latest audio noise: {'Yes' if latest_audio_noise.value else 'No'}
-                Latest light: {'Yes' if latest_light.value else 'No'}
-                Latest air pollution: {'Yes' if latest_air_pollution.value else 'No'}
-                Latest location: {latest_location.latitude}, {latest_location.longitude}
-                """)
+                f"""Latest temperature: {latest_temperature.value}°C
+Latest humidity: {latest_humidity.value}%
+Latest audio noise: {'Yes' if latest_audio_noise.value else 'No'}
+Latest light: {'Yes' if latest_light.value else 'No'}
+Latest air pollution: {'Yes' if latest_air_pollution.value else 'No'}
+Latest location: {latest_location.latitude}, {latest_location.longitude}""")
         
         def plot(Model):
             temperatures = Model.objects.filter(timestamp__gte=timezone.now()-timezone.timedelta(days=7))
