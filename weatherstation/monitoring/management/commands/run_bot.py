@@ -126,7 +126,6 @@ Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}
             latest_location = Location.objects.latest("timestamp")
             email = Email(
                 subject="Weather data",
-                message="Weather data",
                 recipient=settings.EMAIL_RECIPIENT,
                 body=f"""Latest temperature: {latest_temperature.value:.2f}°C
 Last Week Mean temperature: {mean_temperature:.2f}°C
@@ -138,7 +137,7 @@ Latest air pollution: {'Yes' if latest_air_pollution.value else 'No'}
 Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}""")
             email.save()
             weather(message, send_plot=False)
-            EmailAttachment(email=email, file="weather.png").save()
+            EmailAttachment(email=email, name="weather.png", attachment=open("weather.png", "rb"), mimetype="image/png").save()
             email.send()
 
         bot.polling()
