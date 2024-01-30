@@ -19,8 +19,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         bot = telebot.TeleBot(settings.TELEGRAM_BOT_TOKEN)
         apihelper.proxy = {
-            'http', f'socks5://{settings.SOCKS5_IP}:{settings.SOCKS5_PORT}',
-            'https', f'socks5://{settings.SOCKS5_IP}:{settings.SOCKS5_PORT}',
+            'http': f'socks5://{settings.SOCKS5_IP}:{settings.SOCKS5_PORT}',
+            'https': f'socks5://{settings.SOCKS5_IP}:{settings.SOCKS5_PORT}',
         }
 
         @bot.message_handler(commands=["start"])
