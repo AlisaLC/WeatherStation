@@ -7,7 +7,7 @@ from telebot import apihelper
 import requests
 import plotly.express as px
 
-from monitoring.models import LinearRegression
+from sklearn.linear_model import LinearRegression
 
 import timezone
 
@@ -100,5 +100,6 @@ class Command(BaseCommand):
             fig = px.line(x=timestamps, y=[temperature, humidity, wind_speed, soil_temperature, soil_moisture], labels={"x": "Time", "y": "Value"}, title="Weather forecast")
             fig.write_image("weather.png")
             bot.send_photo(message.chat.id, open("weather.png", "rb"))
+            st.plotly_chart(fig)
 
         bot.polling()
