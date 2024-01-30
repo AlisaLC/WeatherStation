@@ -7,7 +7,7 @@ from telebot import apihelper
 import requests
 import plotly.express as px
 
-from sklearn.linear_model import LinearRegression
+from monitoring.models import LinearRegression
 
 import timezone
 

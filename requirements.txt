@@ -6,6 +6,5 @@ adafruit-circuitpython-ads1x15
 numpy
 requests
 pillow
-scikit-learn
 streamlit
 plotly
