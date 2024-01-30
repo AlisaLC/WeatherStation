@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "channels",
     "notification",
     "sensor",
     "monitoring",
@@ -129,6 +130,12 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
@@ -142,7 +149,7 @@ KY038_PIN = 24
 KY038_INTERVAL = 10
 KY038_FREQUENCY = 100
 
-LDR_PIN = 4
+LDR_PIN = 17
 LDR_INTERVAL = 10
 
 CAMERA_URL = f"http://{os.environ['CAMERA_IP']}:{os.environ['CAMERA_PORT']}/photo.jpg"
