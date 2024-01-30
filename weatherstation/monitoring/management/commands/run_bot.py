@@ -53,7 +53,7 @@ Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}
             else:
                 values = [temperature.value for temperature in temperatures]
                 # smoothing kernel
-                values = [sum(values[i-2:i+3])/5 for i in range(2, len(values)-2)]
+                values = values[:2] + [sum(values[i-2:i+3])/5 for i in range(2, len(values)-2)] + values[-2:]
             timestamps = [temperature.timestamp for temperature in temperatures]
             model = LinearRegression()
             model.fit([[i] for i in range(len(timestamps))], values)
