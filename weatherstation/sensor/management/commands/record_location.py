@@ -23,4 +23,4 @@ class Command(BaseCommand):
                     lng=newmsg.longitude
                     Location.objects.create(latitude=lat, longitude=lng)
                     logger.info(f'Location: {lat}, {lng}')
-                time.sleep(settings.GPS_INTERVAL)
+                    time.sleep(settings.GPS_INTERVAL)
