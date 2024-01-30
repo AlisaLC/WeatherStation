@@ -149,5 +149,7 @@ KY038_FREQUENCY = 100
 LDR_PIN = 17
 LDR_INTERVAL = 10
 
+GPS_INTERVAL = 30
+
 CAMERA_URL = f"http://{os.environ['CAMERA_IP']}:{os.environ['CAMERA_PORT']}/photo.jpg"
 CAMERA_INTERVAL = 10
