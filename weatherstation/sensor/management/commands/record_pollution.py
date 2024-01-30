@@ -1,6 +1,7 @@
+from io import BytesIO
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
-import cv2
+from PIL import Image
 import numpy as np
 
 from sensor.models import AirPollution
@@ -41,9 +42,7 @@ class Command(BaseCommand):
         while True:
             try:
                 response = requests.get(settings.CAMERA_URL)
-                img_array = bytearray(response.content)
-                img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
-                img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                img = np.array(Image.open(BytesIO(response.content)))
                 polluted = air_status(img)
                 logger.info(f"Air Pollution: {polluted}")
                 AirPollution.objects.create(polluted=polluted)
