@@ -6,6 +6,8 @@ from telebot import apihelper
 apihelper.API_URL = settings.TELEGRAM_API_URL
 apihelper.FILE_URL = settings.TELEGRAM_FILE_URL
 
+from PIL import Image
+
 import requests
 import plotly.graph_objects as go
 
@@ -137,7 +139,9 @@ Latest air pollution: {'Yes' if latest_air_pollution.value else 'No'}
 Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}""")
             email.save()
             weather(message, send_plot=False)
-            EmailAttachment(email=email, name="weather.png", attachment=open("weather.png", "rb"), mimetype="image/png").save()
+            img =  Image.open("weather.png")
+            img.save(f"{settings.MEDIA_ROOT}/attachments/weather.png")
+            EmailAttachment(email=email, name="weather.png", attachment=f"{settings.MEDIA_ROOT}/attachments/weather.png", mimetype="image/png").save()
             email.send()
 
         bot.polling()
