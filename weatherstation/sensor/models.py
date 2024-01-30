@@ -30,6 +30,7 @@ class Light(models.Model):
         return f"{'Light' if self.value else 'Dark'}"
 
 class AirPollution(models.Model):
+    image = models.ImageField(upload_to="images/", null=True, blank=True)
     value = models.BooleanField() # True = polluted, False = clean
     timestamp = models.DateTimeField(auto_now_add=True)
 

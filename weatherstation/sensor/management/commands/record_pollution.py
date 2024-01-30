@@ -40,7 +40,10 @@ class Command(BaseCommand):
                 img = np.array(Image.open(BytesIO(response.content)))
                 polluted = air_status(img)
                 logger.info(f"Air Pollution: {polluted}")
-                AirPollution.objects.create(value=polluted)
+                img = Image.fromarray(img)
+                image_name = time.strftime("%Y%m%d-%H%M%S") + ".jpg"
+                img.save(f"images/{image_name}")
+                AirPollution.objects.create(value=polluted, image=f"images/{image_name}")
             except Exception as e:
                 logger.error(e)
             time.sleep(settings.CAMERA_INTERVAL)
