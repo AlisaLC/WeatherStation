@@ -49,6 +49,7 @@ Latest audio noise: {'Yes' if latest_audio_noise.value else 'No'}
 Latest light: {'Yes' if latest_light.value else 'No'}
 Latest air pollution: {'Yes' if latest_air_pollution.value else 'No'}
 Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}""")
+            bot.send_location(message.chat.id, latest_location.latitude, latest_location.longitude)
         
         def plot(Model):
             temperatures = Model.objects.filter(timestamp__gte=timezone.now()-timezone.timedelta(days=7))
@@ -56,7 +57,6 @@ Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}
                 values = [1 if temperature.value else 0 for temperature in temperatures]
             else:
                 values = [temperature.value for temperature in temperatures]
-                # smoothing kernel
                 values = values[:2] + [sum(values[i-2:i+3])/5 for i in range(2, len(values)-2)] + values[-2:]
             timestamps = [temperature.timestamp for temperature in temperatures]
             model = LinearRegression()
@@ -91,7 +91,6 @@ Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}
         def air_pollution(message):
             plot(AirPollution)
             bot.send_photo(message.chat.id, open("plot.png", "rb"))
-            # send photo of latest air pollution data
             data = AirPollution.objects.latest("timestamp")
             bot.send_photo(message.chat.id, open(data.image.path, "rb"), caption=f"Air pollution: {'Yes' if data.value else 'No'}")
         
@@ -143,5 +142,6 @@ Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}
             img.save(f"{settings.MEDIA_ROOT}/attachments/weather.png")
             EmailAttachment(email=email, name="weather.png", attachment=f"{settings.MEDIA_ROOT}/attachments/weather.png", mimetype="image/png").save()
             email.send()
+            bot.reply_to(message, "Email sent")
 
         bot.polling()
