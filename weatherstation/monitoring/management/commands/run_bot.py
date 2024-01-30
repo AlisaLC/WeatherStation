@@ -48,8 +48,11 @@ Latest location: {latest_location.latitude}, {latest_location.longitude}""")
         
         def plot(Model):
             temperatures = Model.objects.filter(timestamp__gte=timezone.now()-timezone.timedelta(days=7))
+            if isinstance(temperatures[0].value, bool):
+                values = [1 if temperature.value else 0 for temperature in temperatures]
+            else:
+                values = [temperature.value for temperature in temperatures]
             timestamps = [temperature.timestamp for temperature in temperatures]
-            values = [temperature.value for temperature in temperatures]
             model = LinearRegression()
             model.fit([[i] for i in range(len(timestamps))], values)
             prediction = model.predict([[len(timestamps)]])
@@ -94,9 +97,13 @@ Latest location: {latest_location.latitude}, {latest_location.longitude}""")
             wind_speed = data["hourly"]["wind_speed_10m"]
             soil_temperature = data["hourly"]["soil_temperature_0cm"]
             soil_moisture = data["hourly"]["soil_moisture_0_to_1cm"]
-            fig = px.line(x=timestamps, y=[temperature, humidity, wind_speed, soil_temperature, soil_moisture], labels={"x": "Time", "y": "Value"}, title="Weather forecast")
+            fig = go.Figure()
+            fig.add_scatter(x=timestamps, y=temperature, mode="lines", name="Temperature")
+            fig.add_scatter(x=timestamps, y=humidity, mode="lines", name="Humidity")
+            fig.add_scatter(x=timestamps, y=wind_speed, mode="lines", name="Wind speed")
+            fig.add_scatter(x=timestamps, y=soil_temperature, mode="lines", name="Soil temperature")
+            fig.add_scatter(x=timestamps, y=soil_moisture, mode="lines", name="Soil moisture")
             fig.write_image("weather.png")
             bot.send_photo(message.chat.id, open("weather.png", "rb"))
-            st.plotly_chart(fig)
 
         bot.polling()

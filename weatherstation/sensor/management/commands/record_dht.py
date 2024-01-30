@@ -17,6 +17,10 @@ class Command(BaseCommand):
         while True:
             humidity, temperature = dht.read_retry(dht.DHT22, settings.DHT_PIN)
             if humidity is not None and temperature is not None:
+                if humidity < 0 or humidity > 100 or temperature < -40 or temperature > 125:
+                    logger.warning('Invalid reading. Try again!')
+                    time.sleep(settings.DHT_INTERVAL)
+                    continue
                 Temperature.objects.create(value=temperature)
                 Humidity.objects.create(value=humidity)
                 logger.info(f'Temperature: {temperature} C, Humidity: {humidity} %')
