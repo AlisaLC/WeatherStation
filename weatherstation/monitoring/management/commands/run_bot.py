@@ -89,7 +89,7 @@ Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}
             bot.send_photo(message.chat.id, open("plot.png", "rb"))
             # send photo of latest air pollution data
             data = AirPollution.objects.latest("timestamp")
-            bot.send_photo(message.chat.id, open(data.image, "rb"), caption=f"Air pollution: {'Yes' if data.value else 'No'}")
+            bot.send_photo(message.chat.id, open(data.image.path, "rb"), caption=f"Air pollution: {'Yes' if data.value else 'No'}")
         
         @bot.message_handler(commands=["weather"])
         def weather(message):
