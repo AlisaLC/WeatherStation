@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 
 from sklearn.linear_model import LinearRegression
 
-import timezone
+from django.utils import timezone
 
 from sensor.models import Temperature, Humidity, AudioNoise, Light, AirPollution, Location
 
