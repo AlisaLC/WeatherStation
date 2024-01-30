@@ -5,7 +5,7 @@ import telebot
 from telebot import apihelper
 
 import requests
-import plotly.express as px
+import plotly.graph_objects as go
 
 from sklearn.linear_model import LinearRegression
 
@@ -57,8 +57,9 @@ class Command(BaseCommand):
             model = LinearRegression()
             model.fit([[i] for i in range(len(timestamps))], values)
             prediction = model.predict([[len(timestamps)]])
-            fig = px.line(x=timestamps, y=values, labels={"x": "Time", "y": "Value"}, title=Model.__name__)
-            fig.add_scatter(x=[timestamps[-1], timestamps[-1]+timezone.timedelta(days=1)], y=[values[-1], prediction[0]], mode="lines", name="Prediction")
+            fig = go.Figure()
+            fig.add_scatter(x=timestamps, y=values, mode="lines", name="Data")
+            fig.add_scatter(x=[timestamps[-1], timestamps[-1] + timezone.timedelta(days=1)], y=[values[-1], prediction[0]], mode="lines", name="Prediction")
             fig.write_image("plot.png")
         
         @bot.message_handler(commands=["temperature"])
