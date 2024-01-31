@@ -3,8 +3,8 @@ from django.conf import settings
 
 import telebot
 from telebot import apihelper
-# apihelper.API_URL = settings.TELEGRAM_API_URL
-# apihelper.FILE_URL = settings.TELEGRAM_FILE_URL
+apihelper.API_URL = settings.TELEGRAM_API_URL
+apihelper.FILE_URL = settings.TELEGRAM_FILE_URL
 
 from PIL import Image
 
