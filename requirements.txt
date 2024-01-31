@@ -10,3 +10,4 @@ scikit-learn
 plotly
 pandas
 kaleido
+djangorestframework
