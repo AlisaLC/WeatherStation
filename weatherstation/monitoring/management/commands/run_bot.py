@@ -3,8 +3,8 @@ from django.conf import settings
 
 import telebot
 from telebot import apihelper
-apihelper.API_URL = settings.TELEGRAM_API_URL
-apihelper.FILE_URL = settings.TELEGRAM_FILE_URL
+# apihelper.API_URL = settings.TELEGRAM_API_URL
+# apihelper.FILE_URL = settings.TELEGRAM_FILE_URL
 
 from PIL import Image
 
@@ -137,10 +137,6 @@ Latest light: {'Yes' if latest_light.value else 'No'}
 Latest air pollution: {'Yes' if latest_air_pollution.value else 'No'}
 Latest location: {latest_location.latitude:.5f}, {latest_location.longitude:.5f}""")
             email.save()
-            weather(message, send_plot=False)
-            img =  Image.open("weather.png")
-            img.save(f"{settings.MEDIA_ROOT}/attachments/weather.png")
-            EmailAttachment(email=email, name="weather.png", attachment=f"{settings.MEDIA_ROOT}/attachments/weather.png", mimetype="image/png").save()
             email.send()
             bot.reply_to(message, "Email sent")
 
